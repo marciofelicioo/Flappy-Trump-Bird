@@ -75,11 +75,18 @@ function drawGround() {
   ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
 }
 
+function drawCeiling() {
+  const ceilingHeight = 20;
+  ctx.fillStyle = 'rgba(101, 67, 33, 0.7)';
+  ctx.fillRect(0, 0, canvas.width, ceilingHeight);
+}
+
 function drawPipes() {
   const groundHeight = 20;
+  const ceilingHeight = 20;
   pipes.forEach(pipe => {
     ctx.fillStyle = 'red';
-    ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
+    ctx.fillRect(pipe.x, ceilingHeight, pipe.width, pipe.top - ceilingHeight);
 
     if (pipe.isSpecial5 && !video5El.paused && !video5El.ended) {
       ctx.drawImage(video5El, pipe.x, canvas.height - pipe.bottom - groundHeight, pipe.width, pipe.bottom);
@@ -91,6 +98,7 @@ function drawPipes() {
     }
   });
 }
+
 
 function updatePipes() {
   if (frameCount % pipeInterval === 0) {
@@ -246,6 +254,8 @@ function gameLoop() {
     drawGameOverScreen();
     return; 
   }
+ 
+ drawCeiling();
 
   bird.velocity += gravity;
   bird.y += bird.velocity;
