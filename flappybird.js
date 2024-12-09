@@ -25,21 +25,30 @@ const phrases = ["Always winning!", "USA GOAT", "USA Legend!"];
 
 const birdImage = new Image();
 birdImage.src = 'trumvd.webp';
-
 const video5El = document.createElement('video');
 video5El.src = 'donald-trump-thumbs-up.mp4';
 video5El.muted = true;
 video5El.loop = true;
+video5El.setAttribute('playsinline', '');
+video5El.setAttribute('webkit-playsinline', '');
+video5El.disablePictureInPicture = true;
+video5El.controls = false;
+video5El.controlsList = 'nodownload nofullscreen noremoteplayback';
 video5El.play().catch(err => {
-  console.warn("Autoplay falhou vídeo 5-can. Sem interação do usuário.");
+  console.warn("Autoplay falhou vídeo 5-can no mobile possivelmente.");
 });
 
 const video3El = document.createElement('video');
 video3El.src = 'trump-dance-trump-2024.mp4';
 video3El.muted = true;
 video3El.loop = true;
+video3El.setAttribute('playsinline', '');
+video3El.setAttribute('webkit-playsinline', '');
+video3El.disablePictureInPicture = true;
+video3El.controls = false;
+video3El.controlsList = 'nodownload nofullscreen noremoteplayback';
 video3El.play().catch(err => {
-  console.warn("Autoplay falhou vídeo 3-can. Sem interação do usuário.");
+  console.warn("Autoplay falhou vídeo 3-can no mobile possivelmente.");
 });
 
 document.addEventListener('keydown', (e) => {
