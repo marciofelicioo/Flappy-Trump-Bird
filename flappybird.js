@@ -31,7 +31,7 @@ video5El.src = 'donald-trump-thumbs-up.mp4';
 video5El.muted = true;
 video5El.loop = true;
 video5El.play().catch(err => {
-  console.warn("Autoplay falhou para o vídeo 5-can, será necessária interação do usuário.");
+  console.warn("Autoplay falhou vídeo 5-can. Sem interação do usuário.");
 });
 
 const video3El = document.createElement('video');
@@ -39,7 +39,7 @@ video3El.src = 'trump-dance-trump-2024.mp4';
 video3El.muted = true;
 video3El.loop = true;
 video3El.play().catch(err => {
-  console.warn("Autoplay falhou para o vídeo 3-can, será necessária interação do usuário.");
+  console.warn("Autoplay falhou vídeo 3-can. Sem interação do usuário.");
 });
 
 document.addEventListener('keydown', (e) => {
@@ -255,12 +255,3 @@ function gameLoop() {
 }
 
 gameLoop();
-
-document.addEventListener('click', () => {
-  if (video5El.paused) {
-    video5El.play().catch(console.warn);
-  }
-  if (video3El.paused) {
-    video3El.play().catch(console.warn);
-  }
-});

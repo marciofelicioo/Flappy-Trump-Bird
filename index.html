@@ -7,7 +7,7 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden; /* Remove scrollbars */
+      overflow: hidden;
       background-image: url('vlcsnap-2024-12-09-17h03m00s083.png');
       background-size: cover;
       background-position: center;
@@ -24,8 +24,8 @@
       width: 100%;
       height: 100%;
       overflow: hidden;
-      z-index: -1; /* Coloca o vídeo atrás do conteúdo */
-      display: none; /* Inicia escondido e mostra só se o vídeo der play */
+      z-index: -1;
+      display: none;
     }
 
     .video-background video {
@@ -36,19 +36,19 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      pointer-events: none; /* Evita interação com o vídeo */
+      pointer-events: none; /* Sem interação */
     }
 
     canvas {
       display: block;
       position: relative;
-      z-index: 1; /* Coloca o canvas acima do vídeo */
+      z-index: 1;
     }
   </style>
 </head>
 <body>
   <div class="video-background" id="video-background">
-    <video id="background-video" muted loop playsinline preload="auto">
+    <video id="background-video" muted loop playsinline preload="auto" >
       <source src="EUA.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
@@ -73,14 +73,12 @@
           if (attempts >= 10) {
             clearInterval(interval);
             console.error("Não foi possível iniciar o autoplay após várias tentativas.");
-            // Se falhar, apenas mantemos a imagem de fundo estática
-            // Não alteramos o display do vídeo, ele permanece oculto
+            // Sem interação do usuário para iniciar o vídeo.
           }
         });
       }, 500);
 
-      document.addEventListener("click", () => video.play());
-      document.addEventListener("touchstart", () => video.play());
+      // Removidos eventos de clique e toque para iniciar o vídeo manualmente.
     });
   </script>
 </body>
