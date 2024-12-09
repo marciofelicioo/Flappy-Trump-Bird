@@ -8,7 +8,7 @@ function resizeCanvas() {
 resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
-let bird = { x: 67, y: canvas.height / 2, width: 67, height: 67, velocity: 0 };
+let bird = { x: 55, y: canvas.height / 2, width: 55, height: 55, velocity: 0 };
 const gravity = 0.5;
 const jump = -9;
 let pipes = [];
@@ -239,7 +239,7 @@ function restartGame() {
   canvas.removeEventListener('click', handleClickOnGameOver);
   pipes = [];
   pipeCount = 0;
-  bird = { x: 67, y: canvas.height / 2, width: 67, height: 67, velocity: 0 };
+  bird = { x: 55, y: canvas.height / 2, width: 55, height: 55, velocity: 0 };
   score = 0;
   frameCount = 0;
   isGameOver = false;
