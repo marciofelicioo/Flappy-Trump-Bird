@@ -53,6 +53,12 @@ document.addEventListener('click', () => {
   }
 });
 
+document.addEventListener('touchstart', () => {
+  if (!isGameOver) {
+    bird.velocity = jump;
+  }
+});
+
 function drawBird() {
   ctx.save();
   ctx.beginPath();
