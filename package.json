@@ -1,0 +1,24 @@
+{
+  "name": "flappy-bird",
+  "version": "1.0.0",
+  "description": "A simple yet engaging Flappy Bird game clone built with HTML and JavaScript.",
+  "main": "script.js",
+  "scripts": {
+    "start": "live-server",
+    "build": "echo 'No build step required for this project.'"
+  },
+  "keywords": [
+    "flappy-bird",
+    "game",
+    "javascript",
+    "frontend",
+    "html",
+    "simple-game",
+    "interactive"
+  ],
+  "author": "marciofelicioo",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

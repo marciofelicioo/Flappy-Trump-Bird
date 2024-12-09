@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flappy Bird</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden; /* Remove scrollbars */
+      background-image: url('vlcsnap-2024-12-09-17h03m00s083.png');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .video-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1; /* Coloca o vídeo atrás do conteúdo */
+      display: none; /* Inicia escondido e mostra só se o vídeo der play */
+    }
+
+    .video-background video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none; /* Evita interação com o vídeo */
+    }
+
+    canvas {
+      display: block;
+      position: relative;
+      z-index: 1; /* Coloca o canvas acima do vídeo */
+    }
+  </style>
+</head>
+<body>
+  <div class="video-background" id="video-background">
+    <video id="background-video" muted loop playsinline preload="auto">
+      <source src="EUA.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+  <canvas id="flappyBird"></canvas>
+  <script src="flappybird.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const videoBackground = document.getElementById("video-background");
+      const video = document.getElementById("background-video");
+      let attempts = 0;
+
+      const interval = setInterval(() => {
+        video.play().then(() => {
+          console.log("Autoplay bem-sucedido!");
+          videoBackground.style.display = "block";
+          clearInterval(interval);
+        }).catch(error => {
+          attempts++;
+          console.warn(`Tentativa ${attempts} falhou:`, error);
+          if (attempts >= 10) {
+            clearInterval(interval);
+            console.error("Não foi possível iniciar o autoplay após várias tentativas.");
+            // Se falhar, apenas mantemos a imagem de fundo estática
+            // Não alteramos o display do vídeo, ele permanece oculto
+          }
+        });
+      }, 500);
+
+      document.addEventListener("click", () => video.play());
+      document.addEventListener("touchstart", () => video.play());
+    });
+  </script>
+</body>
+</html>
