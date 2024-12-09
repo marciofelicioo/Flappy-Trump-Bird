@@ -56,17 +56,14 @@ document.addEventListener('keydown', (e) => {
   if (e.code === "Space") bird.velocity = jump;
 });
 
-document.addEventListener('touchstart', (e) => {
-  e.preventDefault();
-  if (!isGameOver) {
-    bird.velocity = jump;
-  }
-});
-
-document.addEventListener('click', () => {
-  if (!isGameOver) bird.velocity = jump;
-});
-
+if ('ontouchstart' in window) {
+  document.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    if (!isGameOver) {
+      bird.velocity = jump;
+    }
+  });
+}
 
 function drawBird() {
   ctx.save();
