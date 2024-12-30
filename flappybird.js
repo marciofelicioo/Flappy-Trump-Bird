@@ -21,10 +21,11 @@ let gameOverHandled = false;
 let currentPhrase = null;
 let cloudTimer = 0;
 
-const phrases = ["Always winning!", "USA GOAT", "USA Legend!"];
+const phrases = ["Always winning!", "USA GOAT!", "USA Legend!"];
 
 const birdImage = new Image();
 birdImage.src = 'trumvd.webp';
+
 const video5El = document.createElement('video');
 video5El.src = 'donald-trump-thumbs-up.mp4';
 video5El.muted = true;
@@ -49,6 +50,32 @@ video3El.controls = false;
 video3El.controlsList = 'nodownload nofullscreen noremoteplayback';
 video3El.play().catch(err => {
   console.warn("Autoplay falhou vídeo 3-can no mobile possivelmente.");
+});
+
+const videoCeilingEl = document.createElement('video');
+videoCeilingEl.src = 'Trump.mp4';
+videoCeilingEl.muted = true;
+videoCeilingEl.loop = true;
+videoCeilingEl.setAttribute('playsinline', '');
+videoCeilingEl.setAttribute('webkit-playsinline', '');
+videoCeilingEl.disablePictureInPicture = true;
+videoCeilingEl.controls = false;
+videoCeilingEl.controlsList = 'nodownload nofullscreen noremoteplayback';
+videoCeilingEl.play().catch(err => {
+  console.warn("Autoplay falhou para vídeo do teto no mobile possivelmente.");
+});
+
+const video4El = document.createElement('video');
+video4El.src = 'Donald.mp4';
+video4El.muted = true;
+video4El.loop = true;
+video4El.setAttribute('playsinline', '');
+video4El.setAttribute('webkit-playsinline', '');
+video4El.disablePictureInPicture = true;
+video4El.controls = false;
+video4El.controlsList = 'nodownload nofullscreen noremoteplayback';
+video4El.play().catch(err => {
+  console.warn("Autoplay falhou vídeo 4-can no mobile possivelmente.");
 });
 
 document.addEventListener('keydown', (e) => {
@@ -77,13 +104,13 @@ function drawBird() {
 
 function drawGround() {
   const groundHeight = 20;
-  ctx.fillStyle = 'rgba(101, 67, 33, 0.7)';
+  ctx.fillStyle = 'red';
   ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
 }
 
 function drawCeiling() {
   const ceilingHeight = 20;
-  ctx.fillStyle = 'rgba(101, 67, 33, 0.7)';
+  ctx.fillStyle = 'rgba(0, 0, 0)';
   ctx.fillRect(0, 0, canvas.width, ceilingHeight);
 }
 
@@ -91,20 +118,25 @@ function drawPipes() {
   const groundHeight = 20;
   const ceilingHeight = 20;
   pipes.forEach(pipe => {
-    ctx.fillStyle = 'red';
-    ctx.fillRect(pipe.x, ceilingHeight, pipe.width, pipe.top - ceilingHeight);
+    if (pipe.isCeilingSpecial && !videoCeilingEl.paused && !videoCeilingEl.ended) {
+      ctx.drawImage(videoCeilingEl, pipe.x, ceilingHeight, pipe.width, pipe.top - ceilingHeight);
+    } else {
+      ctx.fillStyle = 'rgba(0,0,0)';
+      ctx.fillRect(pipe.x, ceilingHeight, pipe.width, pipe.top - ceilingHeight);
+    }
 
     if (pipe.isSpecial5 && !video5El.paused && !video5El.ended) {
       ctx.drawImage(video5El, pipe.x, canvas.height - pipe.bottom - groundHeight, pipe.width, pipe.bottom);
     } else if (pipe.isSpecial3 && !video3El.paused && !video3El.ended) {
       ctx.drawImage(video3El, pipe.x, canvas.height - pipe.bottom - groundHeight, pipe.width, pipe.bottom);
+    } else if (pipe.isSpecial4 && !video4El.paused && !video4El.ended) {
+      ctx.drawImage(video4El, pipe.x, canvas.height - pipe.bottom - groundHeight, pipe.width, pipe.bottom);
     } else {
       ctx.fillStyle = 'red';
       ctx.fillRect(pipe.x, canvas.height - pipe.bottom - groundHeight, pipe.width, pipe.bottom);
     }
   });
 }
-
 
 function updatePipes() {
   if (frameCount % pipeInterval === 0) {
@@ -116,21 +148,24 @@ function updatePipes() {
 
     let isSpecial5 = (pipeCount % 5 === 0);
     let isSpecial3 = (pipeCount % 3 === 0);
+    let isSpecial4 = (pipeCount % 4 === 0);
+    let isCeilingSpecial = (pipeCount % 3 === 0);
 
-    pipes.push({ 
+    pipes.push({
       x: canvas.width,
       width: 100,
       top: top,
       bottom: canvas.height - top - gap,
       passed: false,
       isSpecial5: isSpecial5,
-      isSpecial3: isSpecial3
+      isSpecial3: isSpecial3,
+      isSpecial4: isSpecial4,
+      isCeilingSpecial: isCeilingSpecial
     });
   }
   pipes.forEach(pipe => pipe.x -= 2);
   pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
 }
-
 function detectCollision() {
   const groundHeight = 20;
   for (const pipe of pipes) {
@@ -197,7 +232,7 @@ function drawGameOverScreen() {
   const boxHeight = 200;
 
   ctx.save();
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+  ctx.fillStyle = 'rgba(0, 0, 0)';
   ctx.fillRect(canvas.width / 2 - boxWidth / 2, canvas.height / 2 - boxHeight / 2, boxWidth, boxHeight);
 
   ctx.fillStyle = 'white';
@@ -258,28 +293,35 @@ function gameLoop() {
 
   if (isGameOver) {
     drawGameOverScreen();
-    return; 
+    return;
   }
- 
- drawCeiling();
 
   bird.velocity += gravity;
   bird.y += bird.velocity;
 
-  drawBird();
   drawGround();
   updatePipes();
   drawPipes();
+  drawCeiling();
+  drawBird();
   checkPassPipes();
   drawCloud();
 
-  ctx.fillStyle = 'black';
-  ctx.font = '20px Arial';
+  ctx.save();
+  ctx.font = 'bold 20px Arial';
   ctx.textAlign = 'center';
-  ctx.fillText(`Score: ${score}`, canvas.width / 2, 50);
+  ctx.fillStyle = '#F5DEB3'; 
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 2;
+  
+  ctx.strokeText(`Score: ${score}`, canvas.width / 2, 15);
+  ctx.fillText(`Score: ${score}`, canvas.width / 2, 15);
+
+  ctx.restore();
 
   frameCount++;
   requestAnimationFrame(gameLoop);
 }
+
 
 gameLoop();
