@@ -104,7 +104,7 @@ function drawBird() {
 
 function drawGround() {
   const groundHeight = 20;
-  ctx.fillStyle = 'red';
+  ctx.fillStyle = 'rgba(0,0,0)';
   ctx.fillRect(0, canvas.height - groundHeight, canvas.width, groundHeight);
 }
 
@@ -121,7 +121,7 @@ function drawPipes() {
     if (pipe.isCeilingSpecial && !videoCeilingEl.paused && !videoCeilingEl.ended) {
       ctx.drawImage(videoCeilingEl, pipe.x, ceilingHeight, pipe.width, pipe.top - ceilingHeight);
     } else {
-      ctx.fillStyle = 'rgba(0,0,0)';
+      ctx.fillStyle = 'red';
       ctx.fillRect(pipe.x, ceilingHeight, pipe.width, pipe.top - ceilingHeight);
     }
 
